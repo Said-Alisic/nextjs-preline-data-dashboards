@@ -22,21 +22,25 @@ export default function ChartsPage() {
   };
 
   const areaChart = {
-    title: "Area Chart - Monthly Sales",
+    title: "Area Chart - Income",
     series: [
       {
-        name: "Sales",
-        data: [0, 10000, 27000, 25000, 27000, 40000],
+        name: "2025",
+        data: [5000, 10000, 27000, 25000, 27000, 40000],
+      },
+      {
+        name: "2024",
+        data: [0, 20000, 3000, 7500, 9000, 14000],
       },
     ],
 
     categories: [
-      "20 January 2023",
-      "25 January 2023",
-      "28 January 2023",
-      "31 January 2023",
-      "1 February 2023",
-      "3 February 2023",
+      "January 2023",
+      "February 2023",
+      "March 2023",
+      "April 2023",
+      "May 2023",
+      "June 2023",
     ],
   };
 

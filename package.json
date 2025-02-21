@@ -10,6 +10,7 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "apexcharts": "^4.5.0",
     "next": "15.1.7",
     "preline": "^2.7.0",
