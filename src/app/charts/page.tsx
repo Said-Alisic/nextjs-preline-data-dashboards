@@ -26,21 +26,33 @@ export default function ChartsPage() {
     series: [
       {
         name: "2025",
-        data: [5000, 10000, 27000, 25000, 27000, 40000],
+        data: [
+          5000, 10000, 27000, 25000, 27000, 40000, 17000, 18000, 6000, 9500,
+          15000, 12000,
+        ],
       },
       {
         name: "2024",
-        data: [0, 20000, 3000, 7500, 9000, 14000],
+        data: [
+          4000, 30000, 7000, 2500, 33000, 20000, 10000, 5500, 6000, 8000, 25000,
+          3000,
+        ],
       },
     ],
 
     categories: [
-      "January 2023",
-      "February 2023",
-      "March 2023",
-      "April 2023",
-      "May 2023",
-      "June 2023",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ],
   };
 
