@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import AreaChart from "app/libs/components/charts/AreaChart";
 import LineChart from "app/libs/components/charts/LineChart";
+import PieChart from "app/libs/components/charts/PieChart";
 
 export default function ChartsPage() {
   const lineChart = {
@@ -142,6 +143,28 @@ export default function ChartsPage() {
             categories={areaChart.categories}
             series={areaChart.series}
           />
+        </div>
+        <div className="grid grid-cols-2 gap-10">
+          <div className={chartCardStyles}>
+            <h3 className={chartTitleStyles}>Account Types</h3>
+            <PieChart
+              labels={["Free Tier", "Startup", "Enterprise"]}
+              series={[70, 18, 12]}
+            />
+          </div>
+          <div className={chartCardStyles}>
+            <h3 className={chartTitleStyles}>User Satisfaction</h3>
+            <PieChart
+              labels={[
+                "Love it",
+                "Satisfied",
+                "Neutral",
+                "Unsatisfied",
+                "Hate it",
+              ]}
+              series={[20, 40, 18, 16, 6]}
+            />
+          </div>
         </div>
       </section>
     </div>
