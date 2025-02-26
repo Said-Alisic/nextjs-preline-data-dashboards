@@ -8,21 +8,22 @@ import type { ApexOptions } from "apexcharts";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ChartProps {
-  title: string;
   categories: string[];
   series: { name: string; data: number[] }[];
+  title?: string;
 }
 
 const AreaChart: React.FC<ChartProps> = ({ title, categories, series }) => {
-  const arrowTrendingUpIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+  const arrowTrendingUpIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#1fdb6d" class="size-5">
                                    <path fill-rule="evenodd" d="M12.577 4.878a.75.75 0 0 1 .919-.53l4.78 1.281a.75.75 0 0 1 .531.919l-1.281 4.78a.75.75 0 0 1-1.449-.387l.81-3.022a19.407 19.407 0 0 0-5.594 5.203.75.75 0 0 1-1.139.093L7 10.06l-4.72 4.72a.75.75 0 0 1-1.06-1.061l5.25-5.25a.75.75 0 0 1 1.06 0l3.074 3.073a20.923 20.923 0 0 1 5.545-4.931l-3.042-.815a.75.75 0 0 1-.53-.919Z" clip-rule="evenodd" />
                                  </svg>`;
 
-  const arrowTrendingDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+  const arrowTrendingDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#ff0033" class="size-5">
                            <path fill-rule="evenodd" d="M1.22 5.222a.75.75 0 0 1 1.06 0L7 9.942l3.768-3.769a.75.75 0 0 1 1.113.058 20.908 20.908 0 0 1 3.813 7.254l1.574-2.727a.75.75 0 0 1 1.3.75l-2.475 4.286a.75.75 0 0 1-1.025.275l-4.287-2.475a.75.75 0 0 1 .75-1.3l2.71 1.565a19.422 19.422 0 0 0-3.013-6.024L7.53 11.533a.75.75 0 0 1-1.06 0l-5.25-5.25a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                          </svg>`;
 
   const options: ApexOptions = {
+    colors: ["#1924fa", "#000000", "#8e95e8"],
     chart: {
       id: "area-chart",
       type: "area",
@@ -43,13 +44,13 @@ const AreaChart: React.FC<ChartProps> = ({ title, categories, series }) => {
         stops: [0, 100],
       },
     },
-    title: {
-      text: title,
-      align: "left",
-      offsetX: 30,
-      offsetY: -5,
-      style: { fontSize: "16px", fontWeight: 600, color: "#1f2937" },
-    },
+    // title: {
+    //   text: title,
+    //   align: "left",
+    //   offsetX: 30,
+    //   offsetY: -5,
+    //   style: { fontSize: "16px", fontWeight: 600, color: "#1924fa" },
+    // },
     legend: {
       show: true,
       position: "top",

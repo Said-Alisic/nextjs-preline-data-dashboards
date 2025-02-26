@@ -22,7 +22,7 @@ export default function ChartsPage() {
   };
 
   const areaChart = {
-    title: "Area Chart - Income",
+    title: "Revenue",
     series: [
       {
         name: "2025",
@@ -56,19 +56,27 @@ export default function ChartsPage() {
     ],
   };
 
+  const chartCardStyles = "bg-white rounded-3xl pt-7 pb-4 pr-4 pl-2 shadow-lg";
+  const chartTitleStyles = "text-2xl ml-10 pb-4 text-[#1924fa] font-medium";
+
   return (
     <div className="w-full p-6 justify-items-center">
-      <section className="w-5/6 mt-4 gap-6 grid grid-cols-1 md:grid-cols-2">
-        <LineChart
-          title={lineChart.title}
-          categories={lineChart.categories}
-          series={lineChart.series}
-        />
-        <AreaChart
-          title={areaChart.title}
-          categories={areaChart.categories}
-          series={areaChart.series}
-        />
+      <section className="w-5/6 mt-4 gap-6 grid grid-cols-1 md:grid-cols-1">
+        {/* TODO: #REFACTOR -> Move `div` elements into new components that call a different chart */}
+        <div className={chartCardStyles}>
+          <h3 className={chartTitleStyles}>{lineChart.title}</h3>
+          <LineChart
+            categories={lineChart.categories}
+            series={lineChart.series}
+          />
+        </div>
+        <div className={chartCardStyles}>
+          <h3 className={chartTitleStyles}>{areaChart.title}</h3>
+          <AreaChart
+            categories={areaChart.categories}
+            series={areaChart.series}
+          />
+        </div>
       </section>
     </div>
   );

@@ -7,9 +7,9 @@ import type { ApexOptions } from "apexcharts";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ChartProps {
-  title: string;
   categories: string[];
   series: { name: string; data: any[] }[];
+  title?: string;
 }
 
 const LineChart: React.FC<ChartProps> = ({ title, categories, series }) => {
@@ -28,13 +28,13 @@ const LineChart: React.FC<ChartProps> = ({ title, categories, series }) => {
       dashArray: [0, 0, 4],
       colors: ["#467bf0"],
     },
-    title: {
-      text: title,
-      align: "left",
-      offsetX: 30,
-      offsetY: -5,
-      style: { fontSize: "16px", fontWeight: 600, color: "#1f2937" },
-    },
+    // title: {
+    //   text: title,
+    //   align: "left",
+    //   offsetX: 30,
+    //   offsetY: -5,
+    //   style: { fontSize: "16px", fontWeight: 600, color: "#1f2937" },
+    // },
     legend: { show: false },
     grid: {
       strokeDashArray: 0,
