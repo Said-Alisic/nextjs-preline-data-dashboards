@@ -7,8 +7,8 @@ import {
 import AreaChart from "app/libs/components/charts/AreaChart";
 import LineChart from "app/libs/components/charts/LineChart";
 import PieChart from "app/libs/components/charts/PieChart";
-import Sidebar from "app/libs/components/Sidebar";
-import { Shell } from "lucide-react";
+import Navbar from "app/libs/components/navigation/Navbar";
+import Sidebar from "app/libs/components/navigation/Sidebar";
 
 export default function ChartsPage() {
   const lineChart = {
@@ -107,15 +107,11 @@ export default function ChartsPage() {
 
   return (
     <div>
-      <div className="fixed w-full mb-10">
-        <div className="top-0 w-full h-16 bg-white border-b border-slate-200 py-2 px-4 inline-flex items-center">
-          <Shell size={40} />
-          <h1 className="ml-2 text-2xl font-bold">Preline UI Dashboard</h1>
-        </div>
-
+      <div className="fixed w-full mb-10 z-50">
+        <Navbar />
         <Sidebar />
       </div>
-      <div className="ml-[20rem] w-[80%] py-2 px-1 flex-1">
+      <div className="ml-[20rem] w-[80%] pt-4 pb-10 px-1 flex-1">
         <section className="w-[95%] mt-20 gap-10 grid grid-cols-6 md:grid-cols-4">
           {statCards.map((statCard, key) => (
             <div className={statCardStyles} key={key}>
