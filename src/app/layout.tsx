@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import PrelineScript from "app/libs/components/PrelineScript";
+import Navbar from "app/libs/components/navigation/Navbar";
+import Sidebar from "app/libs/components/navigation/Sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-slate-100">{children}</body>
+      <body className="bg-slate-100">
+        <header>
+          <Navbar />
+          <Sidebar />
+        </header>
+        {children}
+      </body>
       <PrelineScript />
     </html>
   );

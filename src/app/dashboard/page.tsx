@@ -5,6 +5,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import AreaChart from "app/libs/components/charts/AreaChart";
+import BarChart from "app/libs/components/charts/BarChart";
 import LineChart from "app/libs/components/charts/LineChart";
 import PieChart from "app/libs/components/charts/PieChart";
 import Navbar from "app/libs/components/navigation/Navbar";
@@ -106,72 +107,67 @@ export default function ChartsPage() {
     "rounded-3xl px-6 pt-4 pb-10 shadow-lg bg-gradient-to-br from-[#D1D3FE] from-0% via-40% via-white to-white";
 
   return (
-    <div>
-      <div className="fixed w-full mb-10 z-50">
-        <Navbar />
-        <Sidebar />
-      </div>
-      <div className="ml-[20rem] w-[80%] pt-4 pb-10 px-1 flex-1">
-        <section className="w-[95%] mt-20 gap-10 grid grid-cols-6 md:grid-cols-4">
-          {statCards.map((statCard, key) => (
-            <div className={statCardStyles} key={key}>
-              <div className="mb-2 bg-white w-10 h-10 flex justify-center items-center rounded-lg shadow-md">
-                {statCard.icon}
-              </div>
-              <h4 className="text-lg text-black">{statCard.name}</h4>
-              <span className="text-2xl font-semibold text-black mt-1.5">
-                {statCard.value}
-              </span>
-              <span
-                className={`ml-4 text-sm bg-gray-100 px-3 py-1.5 rounded-full ${
-                  statCard.trend === "up" ? "text-[#1fdb6d]" : "text-[#ff0033]"
-                }`}
-              >
-                {statCard.trend === "up" ? "+" : "-"}
-                {statCard.differenceInPercentage}
-              </span>
+    <main className="ml-[20rem] w-[80%] pt-4 pb-10 px-1 ">
+      <section className="w-[95%] mt-20 gap-10 grid grid-cols-6 md:grid-cols-4">
+        {statCards.map((statCard, key) => (
+          <div className={statCardStyles} key={key}>
+            <div className="mb-2 bg-white w-10 h-10 flex justify-center items-center rounded-lg shadow-md">
+              {statCard.icon}
             </div>
-          ))}
-        </section>
-        <section className="w-[95%] mt-10 gap-6 grid grid-cols-1 md:grid-cols-1">
+            <h4 className="text-lg text-black">{statCard.name}</h4>
+            <span className="text-2xl font-semibold text-black mt-1.5">
+              {statCard.value}
+            </span>
+            <span
+              className={`ml-4 text-sm bg-gray-100 px-3 py-1.5 rounded-full ${
+                statCard.trend === "up" ? "text-[#1fdb6d]" : "text-[#ff0033]"
+              }`}
+            >
+              {statCard.trend === "up" ? "+" : "-"}
+              {statCard.differenceInPercentage}
+            </span>
+          </div>
+        ))}
+      </section>
+      <section className="w-[95%] mt-10 gap-6 grid grid-cols-1 md:grid-cols-1">
+        <div className={chartCardStyles}>
+          <h3 className={chartTitleStyles}>{lineChart.title}</h3>
+          <LineChart
+            categories={lineChart.categories}
+            series={lineChart.series}
+          />
+        </div>
+        <div className={chartCardStyles}>
+          <h3 className={chartTitleStyles}>{areaChart.title}</h3>
+          <AreaChart
+            categories={areaChart.categories}
+            series={areaChart.series}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-10">
           <div className={chartCardStyles}>
-            <h3 className={chartTitleStyles}>{lineChart.title}</h3>
-            <LineChart
-              categories={lineChart.categories}
-              series={lineChart.series}
+            <h3 className={chartTitleStyles}>Account Types</h3>
+            <PieChart
+              labels={["Free Tier", "Startup", "Enterprise"]}
+              series={[70, 18, 12]}
             />
           </div>
           <div className={chartCardStyles}>
-            <h3 className={chartTitleStyles}>{areaChart.title}</h3>
-            <AreaChart
-              categories={areaChart.categories}
-              series={areaChart.series}
+            <h3 className={chartTitleStyles}>User Satisfaction</h3>
+            <PieChart
+              labels={[
+                "Love it",
+                "Satisfied",
+                "Neutral",
+                "Unsatisfied",
+                "Hate it",
+              ]}
+              series={[20, 40, 18, 16, 6]}
             />
           </div>
-          <div className="grid grid-cols-2 gap-10">
-            <div className={chartCardStyles}>
-              <h3 className={chartTitleStyles}>Account Types</h3>
-              <PieChart
-                labels={["Free Tier", "Startup", "Enterprise"]}
-                series={[70, 18, 12]}
-              />
-            </div>
-            <div className={chartCardStyles}>
-              <h3 className={chartTitleStyles}>User Satisfaction</h3>
-              <PieChart
-                labels={[
-                  "Love it",
-                  "Satisfied",
-                  "Neutral",
-                  "Unsatisfied",
-                  "Hate it",
-                ]}
-                series={[20, 40, 18, 16, 6]}
-              />
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }
