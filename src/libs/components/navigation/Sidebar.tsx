@@ -8,7 +8,8 @@ export default function Sidebar(): JSX.Element {
       style={{
         width: "16rem",
         borderRight: "1px solid #e2e8f0",
-        marginTop: "4rem",
+        borderTop: "1px solid #e2e8f0",
+        marginTop: "3.55rem",
       }}
     >
       <section className="gap-4 flex flex-col ml-4 text-lg">
