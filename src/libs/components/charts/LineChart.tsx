@@ -14,6 +14,7 @@ interface ChartProps {
 
 const LineChart: React.FC<ChartProps> = ({ title, categories, series }) => {
   const options: ApexOptions = {
+    colors: ["#1924fa", "#000000", "#8e95e8"],
     chart: {
       id: "line-chart",
       height: 250,

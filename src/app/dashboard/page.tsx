@@ -8,8 +8,6 @@ import AreaChart from "app/libs/components/charts/AreaChart";
 import BarChart from "app/libs/components/charts/BarChart";
 import LineChart from "app/libs/components/charts/LineChart";
 import PieChart from "app/libs/components/charts/PieChart";
-import Navbar from "app/libs/components/navigation/Navbar";
-import Sidebar from "app/libs/components/navigation/Sidebar";
 
 export default function ChartsPage() {
   const lineChart = {
@@ -101,6 +99,45 @@ export default function ChartsPage() {
     },
   ];
 
+  const barChartCategories = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const barChartSeries = [
+    {
+      name: "Gross Revenue",
+      data: [
+        23000, 84000, 105000, 157000, 56000, 81000, 58000, 93000, 60000, 66000,
+        34000, 78000,
+      ],
+    },
+    {
+      name: "Net Revenue",
+      data: [
+        17000, 76000, 85000, 101000, 48000, 67000, 50000, 91000, 44000, 49000,
+        28000, 62000,
+      ],
+    },
+    {
+      name: "Expenses",
+      data: [
+        5000, 12000, 14000, 20000, 9500, 8000, 7000, 15500, 7500, 8000, 3000,
+        13500,
+      ],
+    },
+  ];
+
   const chartCardStyles = "bg-white rounded-3xl pt-7 pb-4 pr-4 pl-2 shadow-lg";
   const chartTitleStyles = "text-2xl ml-10 pb-4 text-[#1924fa] font-medium";
   const statCardStyles =
@@ -144,7 +181,10 @@ export default function ChartsPage() {
             series={areaChart.series}
           />
         </div>
-
+        <div className={chartCardStyles}>
+          <h3 className={chartTitleStyles}>Monthly Finances</h3>
+          <BarChart categories={barChartCategories} series={barChartSeries} />
+        </div>
         <div className="grid grid-cols-2 gap-10">
           <div className={chartCardStyles}>
             <h3 className={chartTitleStyles}>Account Types</h3>
