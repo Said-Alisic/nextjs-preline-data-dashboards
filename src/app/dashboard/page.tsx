@@ -4,12 +4,58 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { getIndividualProductSales } from "app/libs/actions";
 import AreaChart from "app/libs/components/charts/AreaChart";
 import BarChart from "app/libs/components/charts/BarChart";
 import LineChart from "app/libs/components/charts/LineChart";
 import PieChart from "app/libs/components/charts/PieChart";
+import { JSX } from "react";
 
-export default function ChartsPage() {
+export default async function ChartsPage(): Promise<JSX.Element> {
+  const shouldCompareData = true;
+
+  const individualProductSales = await getIndividualProductSales({
+    startDate: "2025-01-01",
+    endDate: "2025-03-31",
+    comparison: shouldCompareData,
+  });
+
+  console.log(individualProductSales);
+
+  const piechartData: number[] = individualProductSales.data.map((product) => {
+    const totalProductsSold = individualProductSales.data.reduce(
+      (acc, product) => {
+        return acc + product.totalProductsSold;
+      },
+      0
+    );
+
+    return (
+      Math.round((product.totalProductsSold / totalProductsSold) * 100 * 100) /
+      100
+    );
+  });
+
+  const piechartComparisonData: number[] =
+    individualProductSales.comparisonData.map((product) => {
+      const totalProductsSold = individualProductSales.data.reduce(
+        (acc, product) => acc + product.totalProductsSold,
+        0
+      );
+
+      return (
+        Math.round(
+          (product.totalProductsSold / totalProductsSold) * 100 * 100
+        ) / 100
+      );
+    });
+
+  const piechartLabels: string[] = individualProductSales.data.map(
+    (product) => {
+      return product.name;
+    }
+  );
+
   const lineChart = {
     title: "Monthly Sales",
     series: [
@@ -187,25 +233,34 @@ export default function ChartsPage() {
         </div>
         <div className="grid grid-cols-2 gap-10">
           <div className={chartCardStyles}>
-            <h3 className={chartTitleStyles}>Account Types</h3>
+            <h3 className={chartTitleStyles}>Total Product Sales Year 2025</h3>
             <PieChart
-              labels={["Free Tier", "Startup", "Enterprise"]}
-              series={[70, 18, 12]}
+              labels={piechartLabels}
+              series={piechartData}
+              // labels={["Free Tier", "Startup", "Enterprise"]}
+              // series={[70, 18, 12]}
             />
           </div>
-          <div className={chartCardStyles}>
-            <h3 className={chartTitleStyles}>User Satisfaction</h3>
-            <PieChart
-              labels={[
-                "Love it",
-                "Satisfied",
-                "Neutral",
-                "Unsatisfied",
-                "Hate it",
-              ]}
-              series={[20, 40, 18, 16, 6]}
-            />
-          </div>
+
+          {shouldCompareData ? (
+            <div className={chartCardStyles}>
+              <h3 className={chartTitleStyles}>
+                Total Product Sales Year 2024
+              </h3>
+              <PieChart
+                labels={piechartLabels}
+                series={piechartComparisonData}
+                // labels={[
+                //   "Love it",
+                //   "Satisfied",
+                //   "Neutral",
+                //   "Unsatisfied",
+                //   "Hate it",
+                // ]}
+                // series={[20, 40, 18, 16, 6]}
+              />
+            </div>
+          ) : null}
         </div>
       </section>
     </main>
