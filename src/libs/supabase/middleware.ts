@@ -13,8 +13,8 @@ export async function middleware(request: NextRequest) {
     process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
+        async get(name: string) {
+          return await request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
           const cookieOptions: CookieOptions = {
@@ -23,18 +23,6 @@ export async function middleware(request: NextRequest) {
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
           };
 
-          request.cookies.set({
-            name,
-            value,
-            ...cookieOptions,
-          });
-
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-
           response.cookies.set({
             name,
             value,
@@ -42,20 +30,6 @@ export async function middleware(request: NextRequest) {
           });
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: "",
-            maxAge: 0,
-            expires: new Date(0),
-            ...options,
-          });
-
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-
           response.cookies.set({
             name,
             value: "",
