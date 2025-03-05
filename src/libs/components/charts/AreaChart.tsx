@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { FC } from "react";
 import dynamic from "next/dynamic";
 import type { ApexOptions } from "apexcharts";
 
@@ -10,10 +10,18 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 interface ChartProps {
   categories: string[];
   series: { name: string; data: number[] }[];
+  shouldCompare: boolean;
   title?: string;
+  customLegendItems?: string[];
 }
 
-const AreaChart: React.FC<ChartProps> = ({ title, categories, series }) => {
+const AreaChart: FC<ChartProps> = ({
+  categories,
+  series,
+  shouldCompare,
+  title,
+  customLegendItems,
+}) => {
   const arrowTrendingUpIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#1fdb6d" class="size-5">
                                    <path fill-rule="evenodd" d="M12.577 4.878a.75.75 0 0 1 .919-.53l4.78 1.281a.75.75 0 0 1 .531.919l-1.281 4.78a.75.75 0 0 1-1.449-.387l.81-3.022a19.407 19.407 0 0 0-5.594 5.203.75.75 0 0 1-1.139.093L7 10.06l-4.72 4.72a.75.75 0 0 1-1.06-1.061l5.25-5.25a.75.75 0 0 1 1.06 0l3.074 3.073a20.923 20.923 0 0 1 5.545-4.931l-3.042-.815a.75.75 0 0 1-.53-.919Z" clip-rule="evenodd" />
                                  </svg>`;
@@ -52,11 +60,13 @@ const AreaChart: React.FC<ChartProps> = ({ title, categories, series }) => {
     //   style: { fontSize: "16px", fontWeight: 600, color: "#1924fa" },
     // },
     legend: {
-      show: true,
+      show: shouldCompare,
       position: "top",
       horizontalAlign: "right",
       offsetY: -20,
-      onItemClick: { toggleDataSeries: false },
+      onItemClick: {
+        toggleDataSeries: shouldCompare,
+      },
     },
     grid: {
       strokeDashArray: 0,
@@ -81,12 +91,12 @@ const AreaChart: React.FC<ChartProps> = ({ title, categories, series }) => {
       },
     },
     tooltip: {
-      shared: true,
+      shared: false,
       intersect: false,
       custom: ({ series, dataPointIndex, w }) => {
-        const tooltipTitle = "Revenue";
+        const tooltipTitle = title;
 
-        if (series.length > 1) {
+        if (series.length > 1 && shouldCompare) {
           // Extract the relevant values for comparison
           const currentYearValue = series[0][dataPointIndex] || 0;
           const previousYearValue = series[1][dataPointIndex] || 0;
@@ -148,12 +158,12 @@ const AreaChart: React.FC<ChartProps> = ({ title, categories, series }) => {
           `;
 
           return `
-          <div class="p-3 bg-white border border-gray-200 shadow-md rounded-md">
-            <div class="flex justify-between text-sm font-semibold">
-              <span>${tooltipTitle}</span>
-            </div>
-            ${seriesHtml}
-          </div>`;
+            <div class="p-3 bg-white border border-gray-200 shadow-md rounded-md">
+              <div class="flex justify-between text-sm font-semibold">
+                <span>${tooltipTitle}</span>
+              </div>
+              ${seriesHtml}
+            </div>`;
         }
       },
     },

@@ -5,6 +5,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { getIndividualProductSales } from "app/libs/actions";
+import { getOrderStatsByMonth } from "app/libs/actions/orders.action";
 import AreaChart from "app/libs/components/charts/AreaChart";
 import BarChart from "app/libs/components/charts/BarChart";
 import LineChart from "app/libs/components/charts/LineChart";
@@ -14,13 +15,61 @@ import { JSX } from "react";
 export default async function ChartsPage(): Promise<JSX.Element> {
   const shouldCompareData = true;
 
+  // Areachart data
+  const getOrderStats = await getOrderStatsByMonth({
+    startDate: "2025-01-01",
+    endDate: "2026-03-16",
+    comparison: shouldCompareData,
+  });
+
+  const areaChartLegend = ["Current", "Previous"];
+
+  const areaChartLabels: string[] = getOrderStats.data.map((order) => {
+    return order.month?.slice(0, 3)!;
+  });
+
+  const areaChartData: number[] = getOrderStats.data.map((order) => {
+    return Math.round(order.totalIncomeInCents / 100);
+  });
+
+  const areaChartComparisonData: number[] = getOrderStats.comparisonData.map(
+    (order) => {
+      return Math.round(order.totalIncomeInCents / 100);
+    }
+  );
+
+  const areaChartSeries = {
+    title: "Revenue",
+    series: [
+      {
+        name: areaChartLegend[0],
+        data: areaChartData,
+      },
+      areaChartComparisonData.length > 0
+        ? {
+            name: areaChartLegend[1],
+            data: areaChartComparisonData,
+          }
+        : { name: "", data: [] },
+    ],
+
+    categories: areaChartLabels,
+  };
+
+  // Piechart data
   const individualProductSales = await getIndividualProductSales({
     startDate: "2025-01-01",
     endDate: "2025-03-31",
     comparison: shouldCompareData,
   });
 
-  const piechartData: number[] = individualProductSales.data.map((product) => {
+  const pieChartLabels: string[] = individualProductSales.data.map(
+    (product) => {
+      return product.name;
+    }
+  );
+
+  const pieChartData: number[] = individualProductSales.data.map((product) => {
     const totalProductsSold = individualProductSales.data.reduce(
       (acc, product) => {
         return acc + product.totalProductsSold;
@@ -34,7 +83,7 @@ export default async function ChartsPage(): Promise<JSX.Element> {
     );
   });
 
-  const piechartComparisonData: number[] =
+  const pieChartComparisonData: number[] =
     individualProductSales.comparisonData.map((product) => {
       const totalProductsSold = individualProductSales.data.reduce(
         (acc, product) => acc + product.totalProductsSold,
@@ -47,12 +96,6 @@ export default async function ChartsPage(): Promise<JSX.Element> {
         ) / 100
       );
     });
-
-  const piechartLabels: string[] = individualProductSales.data.map(
-    (product) => {
-      return product.name;
-    }
-  );
 
   const lineChart = {
     title: "Monthly Sales",
@@ -73,41 +116,7 @@ export default async function ChartsPage(): Promise<JSX.Element> {
     ],
   };
 
-  const areaChart = {
-    title: "Monthly Revenue",
-    series: [
-      {
-        name: "2025",
-        data: [
-          5000, 10000, 27000, 25000, 27000, 40000, 17000, 18000, 6000, 9500,
-          15000, 12000,
-        ],
-      },
-      {
-        name: "2024",
-        data: [
-          4000, 30000, 7000, 2500, 33000, 20000, 10000, 5500, 6000, 8000, 25000,
-          3000,
-        ],
-      },
-    ],
-
-    categories: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-  };
-
+  // TODO: Replace with data from database
   const statCards = [
     {
       name: "Active Users",
@@ -185,10 +194,10 @@ export default async function ChartsPage(): Promise<JSX.Element> {
   const chartCardStyles = "bg-white rounded-3xl pt-7 pb-4 pr-4 pl-2 shadow-lg";
   const chartTitleStyles = "text-2xl ml-10 pb-4 text-[#1924fa] font-medium";
   const statCardStyles =
-    "rounded-3xl px-6 pt-4 pb-10 shadow-lg bg-gradient-to-br from-[#D1D3FE] from-0% via-40% via-white to-white";
+    "rounded-3xl pl-6 pr-4 pt-4 pb-10 shadow-lg bg-gradient-to-br from-[#D1D3FE] from-0% via-40% via-white to-white";
 
   return (
-    <main className="ml-[20rem] w-[80%] pt-4 pb-10 px-1 ">
+    <main className="ml-[19rem] w-[80%] pt-4 pb-10 px-1 ">
       <section className="w-[95%] mt-20 gap-10 grid grid-cols-6 md:grid-cols-4">
         {statCards.map((statCard, key) => (
           <div className={statCardStyles} key={key}>
@@ -219,10 +228,14 @@ export default async function ChartsPage(): Promise<JSX.Element> {
           />
         </div>
         <div className={chartCardStyles}>
-          <h3 className={chartTitleStyles}>{areaChart.title}</h3>
+          <h3 className={chartTitleStyles}>
+            {"Monthly " + areaChartSeries.title}
+          </h3>
           <AreaChart
-            categories={areaChart.categories}
-            series={areaChart.series}
+            categories={areaChartSeries.categories}
+            series={areaChartSeries.series}
+            shouldCompare={shouldCompareData}
+            title={areaChartSeries.title}
           />
         </div>
         <div className={chartCardStyles}>
@@ -233,8 +246,8 @@ export default async function ChartsPage(): Promise<JSX.Element> {
           <div className={chartCardStyles}>
             <h3 className={chartTitleStyles}>Total Product Sales Year 2025</h3>
             <PieChart
-              labels={piechartLabels}
-              series={piechartData}
+              labels={pieChartLabels}
+              series={pieChartData}
               // labels={["Free Tier", "Startup", "Enterprise"]}
               // series={[70, 18, 12]}
             />
@@ -246,8 +259,8 @@ export default async function ChartsPage(): Promise<JSX.Element> {
                 Total Product Sales Year 2024
               </h3>
               <PieChart
-                labels={piechartLabels}
-                series={piechartComparisonData}
+                labels={pieChartLabels}
+                series={pieChartComparisonData}
                 // labels={[
                 //   "Love it",
                 //   "Satisfied",
