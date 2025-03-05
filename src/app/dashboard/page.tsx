@@ -20,8 +20,6 @@ export default async function ChartsPage(): Promise<JSX.Element> {
     comparison: shouldCompareData,
   });
 
-  console.log(individualProductSales);
-
   const piechartData: number[] = individualProductSales.data.map((product) => {
     const totalProductsSold = individualProductSales.data.reduce(
       (acc, product) => {
