@@ -44,7 +44,7 @@ interface GetIndividualProductSalesParams {
   comparison: boolean;
 }
 
-// Function to fetch individual product sales
+
 export const getIndividualProductSales = async ({
   startDate,
   endDate,
@@ -74,6 +74,6 @@ export const getIndividualProductSales = async ({
 
   } catch (err) {
     console.error("Unexpected error in getIndividualProductSales:", err);
-    throw err; // Re-throw to let the caller handle it
+    throw err;
   }
 };
