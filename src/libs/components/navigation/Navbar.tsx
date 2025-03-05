@@ -9,7 +9,7 @@ export default function Navbar(): JSX.Element {
     >
       <div className="flex items-center">
         <Shell size={40} className="text-[#1924fa]" />
-        <h1 className="ml-2 text-2xl font-bold">Preline UI Dashboard</h1>
+        <h1 className="ml-4 text-2xl font-bold">Preline UI Dashboard</h1>
       </div>
       <span className="inline-flex justify-center size-10 text-sm font-semibold rounded-full text-[#E8E9FE] bg-[#1924fa]">
         <User size={20} style={{ marginRight: "1rem" }} />
