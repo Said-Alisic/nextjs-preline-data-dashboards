@@ -56,6 +56,39 @@ export default async function ChartsPage(): Promise<JSX.Element> {
     categories: areaChartLabels,
   };
 
+  // Linechart data
+  const lineChartLegend = ["Current", "Previous"];
+
+  const lineChartLabels: string[] = getOrderStats.data.map((order) => {
+    return order.month?.slice(0, 3)!;
+  });
+
+  const lineChartOrderCountData: number[] = getOrderStats.data.map((order) => {
+    return order.orderCount;
+  });
+
+  const lineChartOrderTotalProductsSoldData: number[] = getOrderStats.data.map(
+    (order) => {
+      return order.totalProductsSold;
+    }
+  );
+
+  const lineChartSeries = {
+    title: "Sales",
+    series: [
+      {
+        name: "Orders Delivered",
+        data: lineChartOrderCountData,
+      },
+      {
+        name: "Products Sold",
+        data: lineChartOrderTotalProductsSoldData,
+      },
+    ],
+
+    categories: lineChartLabels,
+  };
+
   // Piechart data
   const individualProductSales = await getIndividualProductSales({
     startDate: "2025-01-01",
@@ -96,25 +129,6 @@ export default async function ChartsPage(): Promise<JSX.Element> {
         ) / 100
       );
     });
-
-  const lineChart = {
-    title: "Monthly Sales",
-    series: [
-      {
-        name: "Sales",
-        data: [0, 10000, 27000, 25000, 27000, 40000],
-      },
-    ],
-
-    categories: [
-      "20 January 2023",
-      "25 January 2023",
-      "28 January 2023",
-      "31 January 2023",
-      "1 February 2023",
-      "3 February 2023",
-    ],
-  };
 
   // TODO: Replace with data from database
   const statCards = [
@@ -221,10 +235,13 @@ export default async function ChartsPage(): Promise<JSX.Element> {
       </section>
       <section className="w-[95%] mt-10 gap-6 grid grid-cols-1 md:grid-cols-1">
         <div className={chartCardStyles}>
-          <h3 className={chartTitleStyles}>{lineChart.title}</h3>
+          <h3 className={chartTitleStyles}>
+            {"Monthly " + lineChartSeries.title}
+          </h3>
           <LineChart
-            categories={lineChart.categories}
-            series={lineChart.series}
+            categories={lineChartSeries.categories}
+            series={lineChartSeries.series}
+            title={lineChartSeries.title}
           />
         </div>
         <div className={chartCardStyles}>
