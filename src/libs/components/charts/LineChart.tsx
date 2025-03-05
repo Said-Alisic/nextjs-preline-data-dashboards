@@ -32,10 +32,10 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
     dataLabels: { enabled: false },
     stroke: {
       curve: "straight",
-      width: [4, 4, 4],
-      dashArray: [0, 0, 4],
+      width: 4,
       colors: ["#1924fa", "#000000", "#8e95e8"],
     },
+
     // title: {
     //   text: title,
     //   align: "left",
@@ -60,9 +60,9 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
     xaxis: {
       type: "category",
       categories,
-      axisBorder: { show: false },
-      axisTicks: { show: false },
-      tooltip: { enabled: false },
+      axisBorder: { show: true },
+      axisTicks: { show: true },
+      tooltip: { enabled: true },
       labels: {
         offsetY: 5,
         style: { colors: "#9ca3af", fontSize: "13px", fontWeight: 400 },
@@ -75,7 +75,6 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
     },
     yaxis: {
       min: 0,
-      // tickAmount: 4,
       labels: {
         align: "left",
         minWidth: 0,
@@ -101,7 +100,7 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
             seriesHtml += `
             <div class="flex items-center pb-2 gap-6">
               <div style="width: 10px; height: 10px; background: ${color}; display: inline-block; margin-right: 8px; border-radius: 5px;"></div>
-              <span class="font-semibold text-gray-900">$${val.toLocaleString()}</span>
+              <span class="font-semibold text-gray-900">${val.toLocaleString()}</span>
               <span class="text-gray-700">${s.name}</span>
             </div>
           `;
@@ -122,7 +121,7 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
           const seriesHtml = `
             <div class="flex items-center pb-2 gap-4">
               <div style="width: 10px; height: 10px; background: ${singleColor}; display: inline-block; margin-right: 8px; border-radius: 5px;"></div>
-              <span class="font-semibold text-gray-900">$${singleValue.toLocaleString()}</span>
+              <span class="font-semibold text-gray-900">${singleValue.toLocaleString()}</span>
               <span class="text-gray-700">${singleSeries.name}</span>
             </div>
           `;
