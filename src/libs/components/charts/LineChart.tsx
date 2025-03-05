@@ -27,7 +27,7 @@ const LineChart: React.FC<ChartProps> = ({ title, categories, series }) => {
       curve: "straight",
       width: [4, 4, 4],
       dashArray: [0, 0, 4],
-      colors: ["#467bf0"],
+      colors: ["#1924fa", "#000000", "#8e95e8"],
     },
     // title: {
     //   text: title,
