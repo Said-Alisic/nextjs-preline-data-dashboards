@@ -14,7 +14,7 @@ export default function Sidebar(): JSX.Element {
     >
       <section className="gap-4 flex flex-col ml-4 text-lg">
         <Link href="/dashboard">Dashboard</Link>
-        <Link href="/settings">Settings</Link>
+        <Link href="#">Settings</Link>
       </section>
     </div>
   );
