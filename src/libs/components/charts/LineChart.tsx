@@ -14,12 +14,27 @@ interface ChartProps {
 
 const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
   const [isToolTipShared, setIsToolTipShared] = useState(true);
+  const [hiddenSeriesIndexes, setHiddenSeriesIndexes] = useState<number[]>([]);
 
   const options: ApexOptions = {
     colors: ["#1924fa", "#000000", "#8e95e8"],
     chart: {
       events: {
-        legendClick: () => {
+        legendClick: (chartContext, seriesIndex, config) => {
+          // Check if seriesIndex is defined
+          if (seriesIndex !== undefined) {
+            // Check if the index already exists in the hidden array
+            if (hiddenSeriesIndexes.includes(seriesIndex)) {
+              // If it exists, remove it (series will be shown)
+              setHiddenSeriesIndexes(
+                hiddenSeriesIndexes.filter((index) => index !== seriesIndex)
+              );
+            } else {
+              // If it doesn't exist, add it (series will be hidden)
+              setHiddenSeriesIndexes([...hiddenSeriesIndexes, seriesIndex]);
+            }
+          }
+
           setIsToolTipShared(!isToolTipShared);
         },
       },
@@ -90,7 +105,7 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
       custom: ({ series, dataPointIndex, w }) => {
         const tooltipTitle = title;
 
-        if (series.length > 1) {
+        if (series.length > 1 && isToolTipShared) {
           let seriesHtml = "";
 
           w.config.series.forEach((s: any, seriesIdx: number) => {
@@ -114,10 +129,14 @@ const LineChart: FC<ChartProps> = ({ title, categories, series }) => {
             ${seriesHtml}
           </div>`;
         } else {
-          const singleSeries = w.config.series[0];
-          const singleValue = series[0][dataPointIndex] || 0;
-          const singleColor = w.globals.colors[0];
+          let seriesIndex = 0;
 
+          if (hiddenSeriesIndexes.includes(0)) seriesIndex = 1;
+          else if (hiddenSeriesIndexes.includes(1)) seriesIndex = 0;
+
+          const singleSeries = w.config.series[seriesIndex];
+          const singleValue = series[seriesIndex][dataPointIndex] || 0;
+          const singleColor = w.globals.colors[seriesIndex];
           const seriesHtml = `
             <div class="flex items-center pb-2 gap-4">
               <div style="width: 10px; height: 10px; background: ${singleColor}; display: inline-block; margin-right: 8px; border-radius: 5px;"></div>
