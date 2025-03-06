@@ -17,7 +17,7 @@ export default async function ChartsPage(): Promise<JSX.Element> {
 
   // Areachart data
   const getOrderStats = await getOrderStatsByMonth({
-    startDate: "2025-01-01",
+    startDate: "2024-10-01",
     endDate: "2026-03-16",
     comparison: shouldCompareData,
   });
@@ -57,7 +57,7 @@ export default async function ChartsPage(): Promise<JSX.Element> {
   };
 
   // Linechart data
-  const lineChartLegend = ["Current", "Previous"];
+  const lineChartLegend = ["Orders Delivered", "Products Sold"];
 
   const lineChartLabels: string[] = getOrderStats.data.map((order) => {
     return order.month?.slice(0, 3)!;
@@ -73,20 +73,53 @@ export default async function ChartsPage(): Promise<JSX.Element> {
     }
   );
 
-  const lineChartSeries = {
-    title: "Sales",
+  const lineChartData = {
+    title: "Order Sales",
     series: [
       {
-        name: "Orders Delivered",
+        name: lineChartLegend[0],
         data: lineChartOrderCountData,
       },
       {
-        name: "Products Sold",
+        name: lineChartLegend[1],
         data: lineChartOrderTotalProductsSoldData,
       },
     ],
-
     categories: lineChartLabels,
+  };
+
+  // Linechart data
+  const barChartLegend = ["Median Products Sold", "Total Products Sold"];
+
+  const barChartLabels: string[] = getOrderStats.data.map((order) => {
+    return order.month?.slice(0, 3)!;
+  });
+
+  const barChartMedianProductsSoldData: number[] = getOrderStats.data.map(
+    (order) => {
+      return order.medianProductsSold;
+    }
+  );
+
+  const barChartOrderTotalProductsSoldData: number[] = getOrderStats.data.map(
+    (order) => {
+      return order.totalProductsSold;
+    }
+  );
+
+  const barChartData = {
+    title: "Product Sales",
+    series: [
+      {
+        name: barChartLegend[0],
+        data: barChartMedianProductsSoldData,
+      },
+      {
+        name: barChartLegend[1],
+        data: barChartOrderTotalProductsSoldData,
+      },
+    ],
+    categories: barChartLabels,
   };
 
   // Piechart data
@@ -236,12 +269,12 @@ export default async function ChartsPage(): Promise<JSX.Element> {
       <section className="w-[95%] mt-10 gap-6 grid grid-cols-1 md:grid-cols-1">
         <div className={chartCardStyles}>
           <h3 className={chartTitleStyles}>
-            {"Monthly " + lineChartSeries.title}
+            {"Monthly " + lineChartData.title}
           </h3>
           <LineChart
-            categories={lineChartSeries.categories}
-            series={lineChartSeries.series}
-            title={lineChartSeries.title}
+            categories={lineChartData.categories}
+            series={lineChartData.series}
+            title={lineChartData.title}
           />
         </div>
         <div className={chartCardStyles}>
@@ -256,8 +289,14 @@ export default async function ChartsPage(): Promise<JSX.Element> {
           />
         </div>
         <div className={chartCardStyles}>
-          <h3 className={chartTitleStyles}>Monthly Finances</h3>
-          <BarChart categories={barChartCategories} series={barChartSeries} />
+          <h3 className={chartTitleStyles}>
+            {"Monthly " + barChartData.title}
+          </h3>
+          <BarChart
+            categories={barChartData.categories}
+            series={barChartData.series}
+            title={barChartData.title}
+          />
         </div>
         <div className="grid grid-cols-2 gap-10">
           <div className={chartCardStyles}>
