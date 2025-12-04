@@ -25,7 +25,7 @@ const PieChart: React.FC<PieChartProps> = ({ labels, series }) => {
       },
     },
     labels,
-    colors: ["#1924fa", "#474FFB", "#757BFC", "#A3A7FD", "#D1D3FE"],
+    colors: ["#0E7490", "#0D9488", "#10B981", "#34D399", "#6EE7B7"],
     dataLabels: {
       enabled: true,
       style: {
