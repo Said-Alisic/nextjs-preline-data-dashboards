@@ -4,7 +4,7 @@ import { JSX } from "react";
 export default function Sidebar(): JSX.Element {
   return (
     <div
-      className="bg-white min-h-screen left-0 p-4 fixed "
+      className="bg-white min-h-screen left-0 p-4 fixed"
       style={{
         width: "16rem",
         borderRight: "1px solid #e2e8f0",

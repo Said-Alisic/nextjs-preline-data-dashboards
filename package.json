@@ -19,7 +19,8 @@
     "preline": "^2.7.0",
     "react": "^19.0.0",
     "react-apexcharts": "^1.7.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "vanilla-calendar-pro": "^3.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

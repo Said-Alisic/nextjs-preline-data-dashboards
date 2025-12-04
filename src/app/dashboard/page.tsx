@@ -239,9 +239,9 @@ export default async function ChartsPage(): Promise<JSX.Element> {
   ];
 
   const chartCardStyles = "bg-white rounded-3xl pt-7 pb-4 pr-4 pl-2 shadow-lg";
-  const chartTitleStyles = "text-2xl ml-10 pb-4 text-[#1924fa] font-medium";
+  const chartTitleStyles = "text-2xl ml-10 pb-4 text-[#0E7490] font-medium";
   const statCardStyles =
-    "rounded-3xl pl-6 pr-4 pt-4 pb-10 shadow-lg bg-gradient-to-br from-[#D1D3FE] from-0% via-40% via-white to-white";
+    "rounded-3xl pl-6 pr-4 pt-4 pb-10 shadow-lg bg-gradient-to-br from-[#82b8ae] from-0% via-40% via-white to-white";
 
   return (
     <main className="ml-[19rem] w-[80%] pt-4 pb-10 px-1 ">

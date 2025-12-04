@@ -79,7 +79,7 @@ const AreaChart: FC<ChartProps> = ({
     //   align: "left",
     //   offsetX: 30,
     //   offsetY: -5,
-    //   style: { fontSize: "16px", fontWeight: 600, color: "#1924fa" },
+    //   style: { fontSize: "16px", fontWeight: 600, color: "#0E7490" },
     // },
     legend: {
       show: shouldCompare,
