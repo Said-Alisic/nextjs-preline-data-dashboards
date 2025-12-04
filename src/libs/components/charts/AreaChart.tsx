@@ -34,7 +34,7 @@ const AreaChart: FC<ChartProps> = ({
                          </svg>`;
 
   const options: ApexOptions = {
-    colors: ["#1924fa", "#000000", "#8e95e8"],
+    colors: ["#0E7490", "#059669", "#0EA5E9"],
     chart: {
       id: "area-chart",
       type: "area",
