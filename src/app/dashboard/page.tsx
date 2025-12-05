@@ -10,16 +10,62 @@ import AreaChart from "app/libs/components/charts/AreaChart";
 import BarChart from "app/libs/components/charts/BarChart";
 import LineChart from "app/libs/components/charts/LineChart";
 import PieChart from "app/libs/components/charts/PieChart";
-import { CustomCalendarPicker } from "app/libs/components/calendar";
-import { JSX } from "react";
+import { DashboardDatePicker } from "app/libs/components/calendar";
+import { JSX, Suspense } from "react";
 
-export default async function ChartsPage(): Promise<JSX.Element> {
+interface PageProps {
+  searchParams: Promise<{
+    startDate?: string;
+    endDate?: string;
+    startTime?: string;
+    endTime?: string;
+  }>;
+}
+
+// Helper to get default date range (last 12 months)
+const getDefaultDateRange = () => {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - 12);
+
+  return {
+    startDate: startDate.toISOString().split("T")[0],
+    endDate: endDate.toISOString().split("T")[0],
+  };
+};
+
+// Helper to format date for display
+const formatDateDisplay = (dateStr: string) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+export default async function ChartsPage({
+  searchParams,
+}: PageProps): Promise<JSX.Element> {
+  const params = await searchParams;
   const shouldCompareData = true;
 
-  // Areachart data
+  // Get date range from URL or use defaults
+  const defaultDates = getDefaultDateRange();
+  const startDate = params.startDate || defaultDates.startDate;
+  const endDate = params.endDate || defaultDates.endDate;
+
+  // Calculate comparison period (same duration, ending before start date)
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const duration = end.getTime() - start.getTime();
+  const comparisonEnd = new Date(start.getTime() - 1);
+  const comparisonStart = new Date(comparisonEnd.getTime() - duration);
+
+  // Areachart data - use selected date range
   const getOrderStats = await getOrderStatsByMonth({
-    startDate: "2024-10-01",
-    endDate: "2026-03-16",
+    startDate,
+    endDate,
     comparison: shouldCompareData,
   });
 
@@ -123,10 +169,10 @@ export default async function ChartsPage(): Promise<JSX.Element> {
     categories: barChartLabels,
   };
 
-  // Piechart data
+  // Piechart data - use selected date range
   const individualProductSales = await getIndividualProductSales({
-    startDate: "2025-01-01",
-    endDate: "2025-03-31",
+    startDate,
+    endDate,
     comparison: shouldCompareData,
   });
 
@@ -244,15 +290,25 @@ export default async function ChartsPage(): Promise<JSX.Element> {
   const statCardStyles =
     "rounded-3xl pl-6 pr-4 pt-4 pb-10 shadow-lg bg-gradient-to-br from-[#82b8ae] from-0% via-40% via-white to-white";
 
+  // Format date range for display
+  const dateRangeDisplay =
+    startDate === endDate
+      ? formatDateDisplay(startDate)
+      : `${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}`;
+
   return (
     <main className="ml-[19rem] w-[80%] pt-4 pb-10 px-1 ">
       <section className="w-[95%] mt-20 mb-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-semibold text-[#0E7490]">Dashboard</h1>
-          <CustomCalendarPicker
-            showTimePicker={true}
-            showPresets={true}
-          />
+          <div>
+            <h1 className="text-3xl font-semibold text-[#0E7490]">Dashboard</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Showing data for: <span className="font-medium text-[#0E7490]">{dateRangeDisplay}</span>
+            </p>
+          </div>
+          <Suspense fallback={<div className="h-12 w-48 bg-gray-100 rounded-2xl animate-pulse" />}>
+            <DashboardDatePicker showTimePicker={false} showPresets={true} />
+          </Suspense>
         </div>
       </section>
       <section className="w-[95%] gap-10 grid grid-cols-6 md:grid-cols-4">
@@ -310,31 +366,21 @@ export default async function ChartsPage(): Promise<JSX.Element> {
         </div>
         <div className="grid grid-cols-2 gap-10">
           <div className={chartCardStyles}>
-            <h3 className={chartTitleStyles}>Total Product Sales Year 2025</h3>
+            <h3 className={chartTitleStyles}>Product Sales Distribution</h3>
             <PieChart
               labels={pieChartLabels}
               series={pieChartData}
-              // labels={["Free Tier", "Startup", "Enterprise"]}
-              // series={[70, 18, 12]}
             />
           </div>
 
-          {shouldCompareData ? (
+          {shouldCompareData && pieChartComparisonData.length > 0 ? (
             <div className={chartCardStyles}>
               <h3 className={chartTitleStyles}>
-                Total Product Sales Year 2024
+                Previous Period Comparison
               </h3>
               <PieChart
                 labels={pieChartLabels}
                 series={pieChartComparisonData}
-                // labels={[
-                //   "Love it",
-                //   "Satisfied",
-                //   "Neutral",
-                //   "Unsatisfied",
-                //   "Hate it",
-                // ]}
-                // series={[20, 40, 18, 16, 6]}
               />
             </div>
           ) : null}
