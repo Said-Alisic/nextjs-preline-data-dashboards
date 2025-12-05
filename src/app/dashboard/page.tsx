@@ -10,6 +10,7 @@ import AreaChart from "app/libs/components/charts/AreaChart";
 import BarChart from "app/libs/components/charts/BarChart";
 import LineChart from "app/libs/components/charts/LineChart";
 import PieChart from "app/libs/components/charts/PieChart";
+import { CustomCalendarPicker } from "app/libs/components/calendar";
 import { JSX } from "react";
 
 export default async function ChartsPage(): Promise<JSX.Element> {
@@ -245,7 +246,16 @@ export default async function ChartsPage(): Promise<JSX.Element> {
 
   return (
     <main className="ml-[19rem] w-[80%] pt-4 pb-10 px-1 ">
-      <section className="w-[95%] mt-20 gap-10 grid grid-cols-6 md:grid-cols-4">
+      <section className="w-[95%] mt-20 mb-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-semibold text-[#0E7490]">Dashboard</h1>
+          <CustomCalendarPicker
+            showTimePicker={true}
+            showPresets={true}
+          />
+        </div>
+      </section>
+      <section className="w-[95%] gap-10 grid grid-cols-6 md:grid-cols-4">
         {statCards.map((statCard, key) => (
           <div className={statCardStyles} key={key}>
             <div className="mb-2 bg-white w-10 h-10 flex justify-center items-center rounded-lg shadow-md">
